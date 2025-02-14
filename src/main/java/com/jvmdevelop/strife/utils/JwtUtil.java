@@ -4,6 +4,7 @@ import com.jvmdevelop.strife.model.UserDetailsImpl;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Date;
 
@@ -17,7 +18,7 @@ public class JwtUtil {
     @Value("${jwt.prefix}")
     private static String PREFIX;
 
-    public static String generateToken(UserDetailsImpl userDetails){
+    public static String generateToken(UserDetails userDetails){
         return Jwts.builder()
                 .subject(userDetails.getUsername())
                 .setIssuedAt(new Date())
@@ -25,7 +26,7 @@ public class JwtUtil {
                 .signWith(SignatureAlgorithm.HS256, SECRET)
                 .compact();
     }
-    public boolean validateToken(String token){
+    public static boolean validateToken(String token){
         try {
             Jwts.parser().setSigningKey(SECRET).build().parseClaimsJws(token);
             return true;

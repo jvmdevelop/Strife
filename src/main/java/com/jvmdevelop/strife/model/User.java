@@ -28,7 +28,10 @@ public class User {
     @Column(nullable = false)
     private String role;
     private String avatarUrl;
-    @OneToMany
+
+    @ManyToMany(mappedBy = "users")
     private List<Chat> chats;
 
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Messages> sentMessages;
 }

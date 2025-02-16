@@ -16,13 +16,18 @@ public class Chat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String title;
     private boolean isTetATet;
-    @ManyToOne
-    private User recepient;
-    private Long recepientId;
-    @OneToMany
-    private List<Messages> messages;
-    @OneToMany
+
+    @ManyToMany
+    @JoinTable(
+            name = "chat_users",
+            joinColumns = @JoinColumn(name = "chat_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
     private List<User> users;
+
+    @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Messages> messages;
 }

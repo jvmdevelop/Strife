@@ -2,11 +2,13 @@ package com.jvmdevelop.strife.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @Table(name = "messages")
 public class Messages {
 
@@ -15,13 +17,12 @@ public class Messages {
     private Long id;
 
     private String content;
-    private Long senderId;
-    private Long chatId;
+
     @ManyToOne
+    @JoinColumn(name = "sender_id", nullable = false)
     private User sender;
 
-    @ManyToMany
+    @ManyToOne
+    @JoinColumn(name = "chat_id", nullable = false)
     private Chat chat;
-
-
 }

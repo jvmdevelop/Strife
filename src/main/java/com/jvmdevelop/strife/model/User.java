@@ -2,6 +2,7 @@ package com.jvmdevelop.strife.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 @Table(name = "users")
 public class User {
     @Id
@@ -34,4 +36,13 @@ public class User {
 
     @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Messages> sentMessages;
+
+    public User(User user ,String username){
+        this.username = username;
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+        this.description = user.getDescription();
+        this.role = user.getRole();
+        this.avatarUrl = user.getAvatarUrl();
+    }
 }

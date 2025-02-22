@@ -18,8 +18,8 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class WebRtcHandler extends TextWebSocketHandler {
     private static final KurentoClient kurentoClient = KurentoClient.create("ws://localhost:8888/kurento");
-    private static final ConcurrentMap<String, MediaPipeline> channels = new ConcurrentHashMap<>();
-    private static final ConcurrentMap<String, ConcurrentMap<String, WebRtcEndpoint>> users = new ConcurrentHashMap<>();
+    public static final ConcurrentMap<String, MediaPipeline> channels = new ConcurrentHashMap<>();
+    public static final ConcurrentMap<String, ConcurrentMap<String, WebRtcEndpoint>> users = new ConcurrentHashMap<>();
     private static final ScheduledExecutorService pingScheduler = Executors.newScheduledThreadPool(1);
     private static final Logger log = LoggerFactory.getLogger(WebRtcHandler.class);
 
@@ -47,7 +47,7 @@ public class WebRtcHandler extends TextWebSocketHandler {
     }
 
     @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+    public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String channel = (String) session.getAttributes().get("channel");
         String user = (String) session.getAttributes().get("user");
         String payload = message.getPayload();

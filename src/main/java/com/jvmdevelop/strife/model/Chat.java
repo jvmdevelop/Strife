@@ -1,5 +1,6 @@
 package com.jvmdevelop.strife.model;
 
+import com.jvmdevelop.strife.dto.ChatDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,12 +14,17 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "chat")
 public class Chat {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
-    private boolean isTetATet;
+
+    @Column(name = "is_tet_a_tet")
+    private Boolean isTetATet = false;
+
+    private Long recipientId; // Можно сделать отношение к User, если нужно
 
     @ManyToMany
     @JoinTable(
@@ -28,6 +34,6 @@ public class Chat {
     )
     private List<User> users;
 
-    @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Messages> messages;
+    @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL)
+    private List<Message> messages;
 }

@@ -34,9 +34,6 @@ public class User {
     @ManyToMany(mappedBy = "users")
     private List<Chat> chats;
 
-    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Messages> sentMessages;
-
     public User(User user ,String username){
         this.username = username;
         this.email = user.getEmail();

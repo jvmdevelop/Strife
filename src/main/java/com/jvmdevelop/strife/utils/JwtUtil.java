@@ -1,6 +1,7 @@
 package com.jvmdevelop.strife.utils;
 
 import com.jvmdevelop.strife.model.UserDetailsImpl;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,5 +38,14 @@ public class JwtUtil {
 
     public static String extractUsername(String s) {
         return Jwts.parser().setSigningKey(SECRET).build().parseClaimsJws(s).getBody().getSubject();
+    }
+
+    public Long validateAndGetUserId(String token) {
+        try {
+            Claims claims = Jwts.parser().setSigningKey(SECRET).build().parseClaimsJws(token).getBody();
+            return Long.parseLong(claims.getSubject());
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

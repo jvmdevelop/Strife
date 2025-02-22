@@ -9,7 +9,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
@@ -53,18 +53,23 @@ public class UserService {
     public User getUserById(Long id) {
         return (User) userRepo.findById(id).orElseThrow(() -> new RuntimeException("No user found with id: " + id));
     }
+    public User findById(Long userId) {
+        return userRepo.findById(userId).orElse(null);
+    }
 
+    public List<User> findUsersByIds(List<Long> userIds) {
+        return userRepo.findAllById(userIds);
+    }
 
     @Transactional
     public User changeName(String header, String username) {
         String token = getToken(header);
-        User user = (User) userRepo.findByUsername(token)
-                .orElseThrow(() -> new RuntimeException("No user found with username: " + JwtUtil.extractUsername(token)));
+        Optional<User> user = userRepo.findByUsername((token));
 
-        user.setUsername(username);
-        userRepo.save(user);
+        user.get().setUsername(username);
+        userRepo.save(user.get());
 
-        return user;
+        return user.orElse(null);
     }
 
 

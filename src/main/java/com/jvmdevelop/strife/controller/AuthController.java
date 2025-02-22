@@ -22,10 +22,10 @@ public class AuthController {
     @PostMapping("/register")
     public String register(@RequestBody UserDto user) {
         String hashPassword = passwordEncoder.encode(user.getPassword());
-        User transUser = userService.add(User.builder()
+        userService.add(User.builder()
                 .username(user.getUsername())
                 .email(user.getEmail())
-                .password(passwordEncoder.encode(user.getPassword()))
+                .password(hashPassword)
                 .description(user.getDescription())
                 .role(user.getRole())
                 .avatarUrl(user.getAvatarUrl())
